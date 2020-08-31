@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Bootstrap CDN -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <!-- apexcharts CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <!--        -->
+        <title>台中市區域房價 2019</title>
+        <style>
+            body {
+                position: relative; 
+            }
+            #chart1 {
+                max-width: 1000px;
+                margin: 40px auto;
+                padding-top: 40px;
+            }
+            #chart1 .apexcharts-xaxis-label {
+                font-weight: bold;
+            }
+            #chart3 {
+                max-width: 1000px;
+                margin: 40px auto;
+            }
+            .chart4 {
+                max-width: 1000px;
+            }
+        </style>
+        <!-- To be confirmed -->
+        <script>
+            window.Promise ||
+                document.write(
+                '<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"><\/script>'
+            )
+            window.Promise ||
+                document.write(
+                '<script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20171210/classList.min.js"><\/script>'
+            )
+            window.Promise ||
+                document.write(
+                '<script src="https://cdn.jsdelivr.net/npm/findindex_polyfill_mdn"><\/script>'
+            )
+        </script>
+    </head>
+    <body data-spy="scroll" data-target=".navbar" data-offset="50">
+        <!-- navigation -->
+        <nav class="navbar navbar-expand-sm navbar-dark fixed-top" style="background-color: #1B1F3B">
+            <div class="container">
+                <a class="navbar-brand fade-page" href="https://tchousing.herokuapp.com/index/">台中市區域房價 2019</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#section1">區域房價</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#section2">人口特徵</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#section3">客群分類</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#section4">資料來源</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- header -->
+        <div class="container-fluid text-light" style="background-color: #375ABB; padding-top: 160px; padding-bottom: 100px">
+            <div class="col-lg-10 mx-auto text-center">
+                <h1><strong>台中市區域房價 2019</strong></h1>
+                <hr style="max-width: 50px; border-width: 3px; border-color: #FB8F8A; margin-top: 30px; margin-bottom: 30px">
+            </div>
+            <div class="col-lg-8 mx-auto">
+                <blockquote class="blockquote" style="text-align: center">
+                    <p>我們彙整台中市2019年各行政區的房價及人口特徵，<br/>
+                        希望呈現區域房價與人口特徵間的關係，進一步了解台中市！</p>
+                </blockquote>
+            </div>
+        </div>
+        <!-- section1 -->
+        <div id="section1" class="container-fluid bg-light text-dark" style="padding-top: 100px; padding-bottom: 50px">
+            <div class="row">
+                <div class="col-lg-1 col-sm-12"></div>
+                <div class="col-lg-3 col-sm-12" style="padding-left: 40px">
+                    <h3>區域房價</h3>
+                </div>
+                <div class="col-lg-7 col-sm-12" style="padding-left: 40px">
+                    <p>以下統計台中市2019年不動產買賣案件價格（不含預售屋案件），<br/>
+                        橫軸為台中市29個行政區，縱軸為案件每坪平均單價（新台幣）。<br/><br/>
+                        移動游標，看看各區房屋的每坪平均單價！</p>
+                </div>
+                <div class="col-lg-1 col-sm-12"></div>
+            </div>
+            <div id="chart1"></div>
+            <script>
+                var colors = [
+                    '#113BCA', '#113BCA',  // 1
+                    '#265FCC', '#265FCC', '#265FCC', '#265FCC', '#265FCC', '#265FCC', // 2
+                    '#3C80CE', '#3C80CE', '#3C80CE', '#3C80CE', '#3C80CE', '#3C80CE', '#3C80CE',  // 3    
+                    '#529BD0', '#529BD0', '#529BD0', '#529BD0', '#529BD0', '#529BD0', '#529BD0', '#529BD0',  // 4
+                    '#68B2D2', '#68B2D2', '#68B2D2', '#68B2D2',  // 5
+                    '#7FC5D4', '#7FC5D4'  // 6
+                ];
+                var options = {
+                    series: [{
+                        name: "每坪平均單價（元）",
+                        data: [294135.79, 272902.58, 244902.17, 229138.24, 217581.66, 
+                               213394.41, 199747.02, 198884.68, 188476.77, 181194.31, 
+                               179935.2, 177933.82, 170668.74, 163183.55, 161767.65, 
+                               142439.06, 141005.65, 139731.93, 138956.89, 136568.61, 
+                               133583.46, 131414.36, 115825.76, 86349.12, 67375.13, 
+                               63907.4, 61399.04, 44972.92, 4627.26]
+                    }],
+                    chart: {
+                        toolbar: false,
+                        height: 350,
+                        type: 'bar',
+                        events: {
+                            click: function(chart, w, e) {
+                                // console.log(chart, w, e)
+                            }
+                        }
+                    },
+                    colors: colors,
+                    plotOptions: {
+                        bar: {
+                            columnWidth: '45%',
+                            distributed: true
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    legend: {
+                        show: false
+                    },
+                    xaxis: {
+                        categories: [
+                            ['西屯區'], ['南屯區'], ['西區'], ['北區'], ['北屯區'],
+                            ['東區'], ['南區'], ['豐原區'], ['大里區'], ['大雅區'],
+                            ['太平區'], ['潭子區'], ['烏日區'], ['中區'], ['沙鹿區'],
+                            ['神岡區'], ['梧棲區'], ['大甲區'], ['后里區'], ['龍井區'],
+                            ['清水區'], ['霧峰區'], ['大肚區'], ['外埔區'], ['東勢區'],
+                            ['石岡區'], ['新社區'], ['大安區'], ['和平區'],
+                        ],
+                        labels: {
+                            style: {
+                                colors: colors,
+                                fontSize: '12px'
+                            }
+                        }
+                    },
+                    yaxis: {
+                        labels: {
+                            formatter: function(val) {
+                                return parseFloat(val).toFixed(0) + '元'
+                            }
+                        }
+                    }
+                };
+                var chart = new ApexCharts(document.querySelector("#chart1"), options);
+                chart.render();
+            </script>
+        </div>
+        <!-- section2 -->
+        <div id="section2" class="container-fluid text-dark" style="padding-top: 50px; padding-bottom: 100px">
+            <div class="row" style="padding-top: 50px; padding-bottom: 50px">
+                <div class="col-lg-1 col-sm-12"></div>
+                <div class="col-lg-3 col-sm-12" style="padding-left: 40px">
+                    <h3>人口特徵</h3>
+                </div>
+                <div class="col-lg-7 col-sm-12" style="padding-left: 40px">
+                    <p>以下彙整台中市2018年之人口特徵，單位說明如下：<br/>
+                        人口密度 — 人口／面積（每百平方公里）<br/>
+                        性別比例 — 男性：女性（每百位）<br/>
+                        教育程度 — 專科以上教育程度人口比例（％）<br/>
+                        離婚比例 — 離婚人口比例（％）<br/>
+                        壯年比例 — 15至64歲人口比例（％）<br/><br/>
+                        移動游標、點選行政區，比較各區之人口特徵！</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-1 col-sm-12"></div>
+                <div class="col-lg-10 col-sm-12">
+                    <div id="c4" class="chart4"></div>
+                    <script>
+                        var colors = ['#FF968A', '#FFAEA5', '#FFC5BF', '#FFD8BE', '#FFC8A2', 
+                                      '#113BCA', '#265FCC', '#3C80CE', '#529BD0', '#68B2D2'];
+                        var options = {
+                            series: [{
+                                name: '西屯區',
+                                data: [4826.92/100, 89.0, 47.89, 35.59, 87.94],
+                            }, {
+                                name: '南屯區',
+                                data: [4564.04/100, 88.0, 48.89, 35.67, 88.88],
+                            }, {
+                                name: '西區',
+                                data: [17361.94/100, 88.0, 50.18, 35.61, 82.65],
+                            }, {
+                                name: '北區',
+                                data: [18618.54/100, 89.0, 45.55, 36.22, 83.07],
+                            }, {
+                                name: '北屯區',
+                                data: [3801.18/100, 90.0, 44.75, 35.34, 86.85],
+                            }, {
+                                name: '東區',
+                                data: [7193.15/100, 97.0, 38.72, 35.69, 83.38],
+                            }, {
+                                name: '南區',
+                                data: [15895.21/100, 90.0, 46.92, 35.73, 86.98],
+                            }, {
+                                name: '豐原區',
+                                data: [3464.97/100, 96.0, 35.81, 35.11, 84.2],
+                            }, {
+                                name: '大里區',
+                                data: [.92/100, 89.0, 47.89, 35.59, 87.94],
+                            }, {
+                                name: '大雅區',
+                                data: [4564.04/100, 88.0, 48.89, 35.67, 88.88],
+                            }, {
+                                name: '太平區',
+                                data: [17361.94/100, 88.0, 50.18, 35.61, 82.65],
+                            }, {
+                                name: '潭子區',
+                                data: [18618.54/100, 89.0, 45.55, 36.22, 83.07],
+                            }, {
+                                name: '烏日區',
+                                data: [3801.18/100, 90.0, 44.75, 35.34, 86.85],
+                            }, {
+                                name: '中區',
+                                data: [7193.15/100, 97.0, 38.72, 35.69, 83.38],
+                            }, {
+                                name: '沙鹿區',
+                                data: [15895.21/100, 90.0, 46.92, 35.73, 86.98],
+                            }, {
+                                name: '神岡區',
+                                data: [3464.97/100, 96.0, 35.81, 35.11, 84.2],
+                            }, {
+                                name: '梧棲區',
+                                data: [.92/100, 89.0, 47.89, 35.59, 87.94],
+                            }, {
+                                name: '大甲區',
+                                data: [4564.04/100, 88.0, 48.89, 35.67, 88.88],
+                            }, {
+                                name: '后里區',
+                                data: [17361.94/100, 88.0, 50.18, 35.61, 82.65],
+                            }, {
+                                name: '龍井區',
+                                data: [18618.54/100, 89.0, 45.55, 36.22, 83.07],
+                            }, {
+                                name: '清水區',
+                                data: [3801.18/100, 90.0, 44.75, 35.34, 86.85],
+                            }, {
+                                name: '霧峰區',
+                                data: [7193.15/100, 97.0, 38.72, 35.69, 83.38],
+                            }, {
+                                name: '大肚區',
+                                data: [15895.21/100, 90.0, 46.92, 35.73, 86.98],
+                            }, {
+                                name: '外埔區',
+                                data: [3464.97/100, 96.0, 35.81, 35.11, 84.2],
+                            }, {
+                                name: '東勢區',
+                                data: [3464.97/100, 96.0, 35.81, 35.11, 84.2],
+                            }, {
+                                name: '石岡區',
+                                data: [3464.97/100, 96.0, 35.81, 35.11, 84.2],
+                            }, {
+                                name: '新社區',
+                                data: [3464.97/100, 96.0, 35.81, 35.11, 84.2],
+                            }, {
+                                name: '大安區',
+                                data: [3464.97/100, 96.0, 35.81, 35.11, 84.2],
+                            }, {
+                                name: '和平區',
+                                data: [3464.97/100, 96.0, 35.81, 35.11, 84.2],
+                            }],
+                            chart: {
+                                toolbar: false,
+                                height: 650,
+                                type: 'radar',
+                                dropShadow: {
+                                    enabled: true,
+                                    blur: 1,
+                                    left: 1,
+                                    top: 1
+                                }
+                            },
+                            stroke: {
+                                width: 1.5
+                            },
+                            fill: {
+                                opacity: 0.1
+                            },
+                            markers: {
+                                size: 5,
+                                hover: {
+                                    size: 10,
+                                }
+                            },
+                            xaxis: {
+                                categories: ['人口密度', '性別比例', '教育程度', '離婚比例', '壯年比例'],
+                                labels: {
+                                    style: {
+                                        fontSize: '14px',
+                                    }
+                                }
+                            },
+                            yaxis: {
+                                show: false,
+                            },
+                            colors: colors,
+                            legend: {
+                                position: 'bottom',
+                                fontSize: '13px',
+                                markers: {
+                                    width: 10,
+                                    height: 10,
+                                },
+                                itemMargin: {
+                                    horizontal: 8,
+                                    vertical: 5,
+                                },
+                            }
+                        };
+                        var chart = new ApexCharts(document.querySelector("#c4"), options);
+                        chart.render();
+                        chart.toggleSeries('南屯區');
+                        chart.toggleSeries('西區');
+                        chart.toggleSeries('北區');
+                        chart.toggleSeries('北屯區');
+                        // chart.toggleSeries('東區');
+                        chart.toggleSeries('南區');
+                        chart.toggleSeries('豐原區');
+                        chart.toggleSeries('大里區');
+                        chart.toggleSeries('大雅區');
+                        chart.toggleSeries('太平區');
+                        chart.toggleSeries('潭子區');
+                        chart.toggleSeries('烏日區');
+                        chart.toggleSeries('中區');
+                        chart.toggleSeries('沙鹿區');
+                        chart.toggleSeries('神岡區');
+                        chart.toggleSeries('梧棲區');
+                        chart.toggleSeries('大甲區');
+                        chart.toggleSeries('后里區');
+                        chart.toggleSeries('龍井區');
+                        chart.toggleSeries('清水區');
+                        chart.toggleSeries('霧峰區');
+                        chart.toggleSeries('大肚區');
+                        chart.toggleSeries('外埔區');
+                        chart.toggleSeries('東勢區');
+                        chart.toggleSeries('石岡區');
+                        chart.toggleSeries('新社區');
+                        chart.toggleSeries('大安區');
+                        chart.toggleSeries('和平區');
+                    </script>
+                </div>
+                <div class="col-lg-1 col-sm-12"></div>
+            </div>
+        </div>
+        <!-- section3 -->
+        <div id="section3" class="container-fluid bg-light text-dark" style="padding-top: 50px; padding-bottom: 50px">
+            <div class="row" style="padding-top: 50px; padding-bottom: 30px">
+                <div class="col-lg-1 col-sm-12"></div>
+                <div class="col-lg-3 col-sm-12" style="padding-left: 40px">
+                    <h3>客群分類</h3>
+                </div>
+                <div class="col-lg-7 col-sm-12" style="padding-left: 40px">
+                    <p>以下應用 K-means 集群分析（K-means clustering），<br/>
+                        根據前述區域房價及人口特徵，將台中市各區居民分為五個客群。<br/>
+                        橫軸為人口密度（人／平方公里），縱軸為教育程度（％，專科以上人口比例）。<br/><br/>
+                        客群Ａ：北區、西區、中區、南區<br/>
+                        客群Ｂ：東區、大里區<br/>
+                        客群Ｃ：西屯區、南屯區、北屯區、豐原區、潭子區、梧棲區<br/>
+                        客群Ｄ：大雅區、沙鹿區、烏日區、龍井區、太平區、神岡區、大肚區、清水區、大甲區<br/>
+                        客群Ｅ：霧峰區、后里區、石岡區、東勢區、外埔區、新社區、大安區、和平區<br/>
+                    </p>
+                </div>
+                <div class="col-lg-1 col-sm-12"></div>
+            </div>
+            <div id="chart3"></div>
+            <script>
+                var colors = ['#FF968A', '#FFC8A2', '#68B2D2', '#3C80CE', '#113BCA'];
+                var options = {
+                    series: [{
+                        name: "客群Ａ",
+                        data: [
+                            // 北區, 西區, 中區, 南區
+                            [18618.54, 45.55], [17361.94, 50.18], [17339.54, 39.03], [15895.21, 46.92]]   
+                    },{
+                        name: "客群Ｂ",
+                        data: [
+                            // 東區, 大里區
+                            [7193.15, 38.72], [6221.30, 35.78]]
+                    },{
+                        name: "客群Ｃ",
+                        data: [
+                            // 西屯區, 南屯區, 北屯區, 豐原區, 潭子區, 梧棲區
+                            [4826.92, 47.89], [4564.04, 48.89], [3801.18, 44.75], [3464.97, 35.81], [3621.55, 35.05], [2967.50, 32.79]]
+                    },{
+                        name: "客群Ｄ",
+                        data: [
+                            // 大雅區, 沙鹿區, 烏日區, 龍井區, 太平區, 神岡區, 大肚區, 清水區, 大甲區
+                            [2497.34, 33.91], [1924.82, 36.11], [1484.18, 35.32], [1748.34, 34.23], [1364.79, 33.97], 
+                            [1624.73, 30.18], [1340.43, 31.68], [1166.07, 31.57], [1125.66, 30.76]]
+                    },{
+                        name: "客群Ｅ",
+                        data: [
+                            // 霧峰區, 后里區, 石岡區, 東勢區, 外埔區, 新社區, 大安區, 和平區
+                            [585.42, 31.63], [797.96, 28.36], [735.13, 27.65], [381.39, 27.81], 
+                            [665.36, 26.09], [316.07, 23.93], [625.59, 23.16], [9.42, 20.46]]
+                    }],
+                    chart: {
+                        toolbar: false,
+                        height: 400,
+                        type: 'scatter',
+                        zoom: {
+                            enabled: true,
+                            type: 'xy'
+                        }
+                    },
+                    colors: colors,
+                    xaxis: {
+                        tickAmount: 6,
+                        labels: {
+                            formatter: function(val) {
+                                return parseFloat(val).toFixed(1)
+                            }
+                        }
+                    },
+                    yaxis: {
+                        tickAmount: 5,
+                        labels: {
+                            formatter: function(val) {
+                                return parseFloat(val).toFixed(1) + '%'
+                            }
+                        }
+                    },
+                    legend: {
+                        position: 'right',
+                        fontSize: '14px',
+                        offsetY: 0,
+                        markers: {
+                            width: 10,
+                            height: 10,
+                        },
+                        itemMargin: {
+                            horizontal: 10,
+                            vertical: 5,
+                        },
+                    }
+                };
+                var chart = new ApexCharts(document.querySelector("#chart3"), options);
+                chart.render();
+            </script>
+        </div>
+        <!-- section4 -->
+        <div id="section4" class="container-fluid text-light" style="background-color: #1B1F3B; padding-top: 120px; padding-bottom: 120px">
+            <div class="row">
+                <div class="col-lg-1 col-sm-12"></div>
+                <div class="col-lg-3 col-sm-12" style="padding-left: 40px">
+                    <h3>資料來源</h3>
+                </div>
+                <div class="col-lg-7 col-sm-12" style="padding-left: 40px">
+                    <ol start="1">
+                        <li>臺中市不動產實價登錄資訊－買賣案件（2019）：<a href="https://opendata.taichung.gov.tw/dataset/16bbf5b9-e027-4649-b2f6-edcfafba9b56">臺中市政府開放資料平台</a></li>
+                        <li>臺中市各區十五歲以上現住人口數（2018）：<a href="https://opendata.taichung.gov.tw/dataset/d6eb9990-1c6c-4d5d-9d28-0ef88e28a10d">臺中市政府開放資料平台</a></li>
+                        <li>臺中市各行政區所轄面積（2018）：<a href="https://www.civil.taichung.gov.tw/93496/post">臺中市政府民政局</a></li>
+                    </ol>
+                </div>
+                <div class="col-lg-1 col-sm-12"></div>
+            </div>
+            <div class="col-lg-10 mx-auto text-center" style="padding-top: 40px; padding-bottom: 40px">
+                <hr style="border-width: 0.25px; border-color: white; margin-top: 30px; margin-bottom: 30px">
+            </div>
+            <div class="row">
+                <div class="col-lg-1 col-sm-12"></div>
+                <div class="col-lg-3 col-sm-12" style="padding-left: 40px">
+                    <h3>技術工具</h3>
+                </div>
+                <div class="col-lg-7 col-sm-12" style="padding-left: 40px">
+                    <ul>
+                        <li>資料彙整及分析：SQLite（Sqlite3）、Python（Pandas, Numpy, Sklearn）</li>
+                        <li>資料視覺化：<a href="https://apexcharts.com/">ApexCharts</a></li>
+                        <li>前端框架：Bootstrap 4</li>
+                        <li>網路框架及雲端平台：Django、Heroku</li>
+                        <li>本網站原始碼：<a href="https://github.com/jingwen-tang/Taichung-Housing-2019.git">Github Repository</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-1 col-sm-12"></div>
+            </div>
+            <div class="col-lg-10 mx-auto text-center" style="padding-top: 40px; padding-bottom: 40px">
+                <hr style="border-width: 0.25px; border-color: white; margin-top: 30px; margin-bottom: 30px">
+            </div>
+            <div class="row">
+                <div class="col-lg-1 col-sm-12"></div>
+                <div class="col-lg-3 col-sm-12" style="padding-left: 40px">
+                    <h2>Thank you!</h2>
+                </div>
+                <div class="col-lg-7 col-sm-12" style="padding-left: 40px">
+                    <p>　謝謝你造訪這個網站！💫<br/>
+                        　若你對這個小專案有任何想法，歡迎與我聯繫，或瞧瞧我的 <a href="https://www.linkedin.com/in/jing-wen-tang/">LinkedIn</a>！</p>
+                </div>
+                <div class="col-lg-1 col-sm-12"></div>
+            </div>
+        </div>
+        <!-- footer -->
+        <!-- <div class="container-fluid" style="background-color: #1B1F3B; padding-bottom: 50px"></div> -->
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    </body>
+</html>
